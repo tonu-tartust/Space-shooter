@@ -1,7 +1,8 @@
+
 //board
 let tileSize = 32;
 let rows = 38;
-let columns = 53;
+let columns = 52;
 
 let board;
 let boardWidth = tileSize * columns; 
@@ -10,7 +11,7 @@ let context;
 
 //ship
 let shipWidth = tileSize*2;
-let shipHeight = tileSize;
+let shipHeight = tileSize*2;
 let shipX = tileSize * columns/2 - tileSize;
 let shipY = tileSize * rows - tileSize*2;
 
@@ -22,7 +23,8 @@ let ship = {
 }
 
 let shipImg;
-let shipVelocityX = tileSize * 2; //ship moving speed
+let shipVelocityX = tileSize *  2; //ship speed X
+let shipVelocityY = tileSize *  2; //ship speed Y
 
 //aliens
 let alienArray = [];
@@ -32,14 +34,14 @@ let alienX = tileSize;
 let alienY = tileSize;
 let alienImg;
 
-let alienRows = 2;
+let alienRows = 3;
 let alienColumns = 5;
 let alienCount = 0; 
-let alienVelocityX = 1; //alien moving speed
+let alienVelocityX = 2; //alien speed
 
 //bullets
 let bulletArray = [];
-let bulletVelocityY = -10; //bullet moving speed
+let bulletVelocityY = -10 ; //bullet speed
 
 let score = 0;
 let gameOver = false;
@@ -52,7 +54,7 @@ window.onload = function() {
 
 
 
-    //load images
+    //images
     shipImg = new Image();
     shipImg.src = "./cartoonship blue.png";
     shipImg.onload = function() {
@@ -80,8 +82,8 @@ function update() {
     //ship
     context.drawImage(shipImg, ship.x, ship.y, ship.width, ship.height);
 
-    //alien
-    for (let i = 0; i < alienArray.length; i++) {
+       //alien
+       for (let i = 0; i < alienArray.length; i++) {
         let alien = alienArray[i];
         if (alien.alive) {
             alien.x += alienVelocityX;
@@ -130,7 +132,7 @@ function update() {
 
     //next level
     if (alienCount == 0) {
-        //increase the number of aliens in columns and rows by 1
+        //increase in columns and rows by 1
         score += alienColumns * alienRows * 100; 
         alienColumns = Math.min(alienColumns + 1, columns/2 -2); 
         alienRows = Math.min(alienRows + 1, rows-4);  
@@ -161,6 +163,13 @@ function moveShip(e) {
     }
     else if (e.code == "ArrowRight" && ship.x + shipVelocityX + ship.width <= board.width) {
         ship.x += shipVelocityX; //move right 
+    }
+
+    if (e.code == "ArrowUp") {
+        ship.y -= shipVelocityY; //move up
+    } 
+    else if (e.code == "ArrowDown" && ship.y + shipVelocityY + ship.height <= board.height) {
+        ship.y += shipVelocityY; //move down
     }
 }
 
